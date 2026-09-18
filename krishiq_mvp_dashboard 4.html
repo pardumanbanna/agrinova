@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KRISHIQ - Farmer Portal & SIH 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Optimizing for mobile touch interactions */
+        * { -webkit-tap-highlight-color: transparent; }
+        
+        body { padding-bottom: 80px; /* Space for mobile bottom nav */ }
+        @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Persistent Voice Assistant Pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .voice-btn { animation: pulse-ring 2.5s infinite; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased">
+
+    <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 relative">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-xl tracking-tight text-slate-900">कृषिQ (KRISHIQ)</span>
+                    </div>
+                </div>
+                
+                <!-- Language Selector for Accessibility -->
+                <div class="flex items-center gap-2">
+                    <div class="bg-slate-100 px-3 py-2 rounded-lg border border-slate-200 flex items-center gap-2 cursor-pointer active:bg-slate-200">
+                        <i class="fa-solid fa-language text-brand-600"></i>
+                        <select id="languageSelect" onchange="changeLanguage()" class="bg-transparent text-sm font-medium text-slate-700 outline-none appearance-none pr-4">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी (Hindi)</option>
+                            <option value="mr">मराठी (Marathi)</option>
+                            <option value="te">తెలుగు (Telugu)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 absolute right-6 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20">
+        <section class="px-4 py-6 max-w-7xl mx-auto">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-brand-700 to-brand-500 rounded-2xl p-6 text-white shadow-lg mb-8 relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-brand-100 text-sm font-medium">Welcome, Ramakant (Kisan ID: 8934)</p>
+                        <button onclick="showLogin()" class="text-xs bg-brand-800/40 hover:bg-brand-800/60 px-3 py-1 rounded-full backdrop-blur-sm transition-colors shadow-sm flex items-center gap-1 active:scale-95">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                        </button>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-bold mb-4" data-i18n="hero_title">Sell Your Crop Easily & Quickly</h1>
+                    <p class="text-sm text-brand-50 mb-6 max-w-md" data-i18n="hero_desc">Avoid long lines at the Mandi. Book your slot and know exactly when to arrive.</p>
+                    <button class="bg-white text-brand-700 px-6 py-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-check"></i> <span data-i18n="btn_book_slot">Book Mandi Slot Now</span>
+                    </button>
+                </div>
+                <!-- Background decoration -->
+                <i class="fa-solid fa-wheat-awn absolute -bottom-6 -right-6 text-9xl text-white opacity-10"></i>
+            </div>
+
+            <!-- Mobile Quick Actions Grid -->
+            <div class="mb-10">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 px-1" data-i18n="quick_actions">Quick Actions</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Action 1 -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="document.getElementById('demo').scrollIntoView()">
+                        <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_wait">Check Wait Time</span>
+                    </button>
+                    <!-- Action 2 -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="showMsg('Loading current market MSP...')">
+                        <div class="w-14 h-14 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_prices">Market Prices</span>
+                    </button>
+                    <!-- Action 3 -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="showMsg('Fetching payment history...')">
+                        <div class="w-14 h-14 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_payments">My Payments</span>
+                    </button>
+                    <!-- Action 4 -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="showMsg('Opening e-Seva Kiosk locator...')">
+                        <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_kiosk">Find Kiosk</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="py-12 bg-white border-y border-slate-200">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">AI Mandi Crowd Predictor</h2>
+                        <p class="text-sm text-slate-500">Find out how long you will have to wait today.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 shadow-inner">
+                    <!-- Large, Touch-Friendly Form -->
+                    <div class="space-y-5 mb-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">1. Select Mandi Location</label>
+                            <div class="relative">
+                                <select id="mandiSelect" class="w-full rounded-xl border-slate-300 border-2 p-4 text-lg focus:ring-brand-500 focus:border-brand-500 bg-white text-slate-900 appearance-none shadow-sm">
+                                    <option value="nawapara">Nawapara APMC</option>
+                                    <option value="raipur">Raipur Central Mandi</option>
+                                    <option value="dhamtari">Dhamtari Procurement Hub</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">2. Crop Amount (Quintals)</label>
+                            <input type="number" id="volumeInput" value="50" class="w-full rounded-xl border-slate-300 border-2 p-4 text-lg focus:ring-brand-500 focus:border-brand-500 bg-white text-slate-900 shadow-sm" />
+                        </div>
+                        <button onclick="runInference()" id="predictBtn" class="w-full py-5 rounded-xl bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white text-lg font-bold shadow-lg shadow-brand-500/30 transition-all flex items-center justify-center gap-2">
+                            Check My Wait Time
+                        </button>
+                    </div>
+                    
+                    <!-- Output Display -->
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 text-center" id="resultContainer">
+                        <div id="defaultState" class="text-slate-400 py-4">
+                            <p>Select location and tap the button to calculate.</p>
+                        </div>
+
+                        <div id="loadingState" class="hidden text-brand-600 py-4">
+                            <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3"></i>
+                            <p class="font-medium">AI is checking current rush...</p>
+                        </div>
+
+                        <div id="resultState" class="hidden">
+                            <div class="text-sm font-bold text-slate-500 uppercase">Estimated Wait Time</div>
+                            <div class="text-5xl font-extrabold text-slate-900 my-4">
+                                <span id="predictedTime">--</span>
+                                <span class="text-xl text-slate-500 font-medium">mins</span>
+                            </div>
+                            
+                            <div class="w-full bg-slate-100 rounded-full h-3 mb-6 overflow-hidden">
+                                <div id="capacityBar" class="bg-brand-500 h-3 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                            </div>
+                            
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-left">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-600">Advice:</span>
+                                    <span class="text-sm font-bold text-slate-900" id="actionStatus">Proceed to Gate 2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Persistent Floating Voice Assistant (Crucial for Low Digital Literacy) -->
+        <button class="fixed bottom-24 right-4 md:bottom-8 md:right-8 w-16 h-16 rounded-full bg-brand-600 text-white text-2xl shadow-[0_0_20px_rgba(34,197,94,0.4)] flex items-center justify-center z-50 voice-btn active:scale-90 transition-transform" onclick="showMsg('Listening in Hindi... \n(BHASHINI Voice Assistant Mock)')">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+
+
+        <!-- SEPARATOR FOR SIH JUDGES -->
+        <div class="py-12 bg-slate-900 text-center">
+            <h2 class="text-slate-400 text-sm font-bold tracking-widest uppercase mb-2">SIH 2026 Presentation Content</h2>
+            <h3 class="text-2xl text-white font-bold">Technical Architecture & Impact</h3>
+        </div>
+
+        <section id="architecture" class="py-16 bg-slate-800 text-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold mb-4">3-Tier System Architecture</h2>
+                    <p class="text-slate-400 text-sm">Designed for massive concurrency and real-time state synchronization across rural kiosks and central servers.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <!-- Presentation -->
+                    <div class="bg-slate-700/50 p-6 rounded-2xl border border-slate-600">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2"><i class="fa-brands fa-react text-blue-400"></i> Client Layer</h3>
+                        <p class="text-sm text-slate-300">PWA React frontend optimized for low-bandwidth mobile networks and Kiosk terminals. Includes BHASHINI API integration.</p>
+                    </div>
+                    <!-- Application -->
+                    <div class="bg-slate-700/50 p-6 rounded-2xl border border-slate-600">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2"><i class="fa-brands fa-node-js text-green-400"></i> Application Logic</h3>
+                        <p class="text-sm text-slate-300">Node.js/Express.js handling JWT auth, SMS event triggers, and queuing the XGBoost inference model.</p>
+                    </div>
+                    <!-- Data -->
+                    <div class="bg-slate-700/50 p-6 rounded-2xl border border-slate-600">
+                        <h3 class="text-lg font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-database text-yellow-400"></i> Persistence</h3>
+                        <p class="text-sm text-slate-300">MongoDB for agricultural metadata and fast writes. AWS S3 for storing crop quality assaying imagery.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 rounded-xl border border-slate-700 p-4 overflow-x-auto">
+                    <div class="text-xs text-slate-400 mb-2">Example API Response: /api/v1/predict-load</div>
+<pre class="text-xs font-mono text-green-400"><code>{
+  "status": "success",
+  "data": {
+    "lotId": "KRI-PDY-88349",
+    "aiPredictedWaitTime_minutes": 45,
+    "confidenceScore": 0.92,
+    "m/m/c_lambda": 1.2,
+    "recommendedAction": "Hold staging area B"
+  }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="text-2xl font-bold text-slate-900 mb-8">System Comparison Matrix</h2>
+                
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-600 text-xs uppercase tracking-wider">
+                                <th class="p-3 font-semibold">Feature</th>
+                                <th class="p-3 font-semibold text-center border-l border-slate-200">Legacy APMC</th>
+                                <th class="p-3 font-semibold text-center border-l border-slate-200">e-NAM</th>
+                                <th class="p-3 font-semibold text-center bg-brand-50 border-l border-brand-200 text-brand-700">KRISHIQ (Ours)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium text-slate-800">Wait Time Prediction</td>
+                                <td class="p-3 text-center text-red-400"><i class="fa-solid fa-xmark"></i></td>
+                                <td class="p-3 text-center text-red-400"><i class="fa-solid fa-xmark"></i></td>
+                                <td class="p-3 text-center text-brand-600 bg-brand-50/50 font-bold"><i class="fa-solid fa-check"></i> XGBoost</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium text-slate-800">Voice Assistant</td>
+                                <td class="p-3 text-center text-red-400"><i class="fa-solid fa-xmark"></i></td>
+                                <td class="p-3 text-center text-red-400"><i class="fa-solid fa-xmark"></i></td>
+                                <td class="p-3 text-center text-brand-600 bg-brand-50/50 font-bold"><i class="fa-solid fa-check"></i> BHASHINI</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-800">Smart Hub Onboarding</td>
+                                <td class="p-3 text-center text-red-400"><i class="fa-solid fa-xmark"></i></td>
+                                <td class="p-3 text-center text-slate-400">Partial</td>
+                                <td class="p-3 text-center text-brand-600 bg-brand-50/50 font-bold"><i class="fa-solid fa-check"></i> Kiosk UI</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Page Overlay -->
+    <div id="loginPage" class="fixed inset-0 bg-slate-50 z-[110] flex-col overflow-y-auto pb-20 hidden">
+        <!-- Graphic / Header -->
+        <div class="bg-brand-600 px-4 py-12 flex flex-col items-center justify-center text-white rounded-b-3xl shadow-md">
+            <div class="w-16 h-16 rounded-2xl bg-white text-brand-600 flex items-center justify-center text-3xl shadow-lg mb-4">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight mb-1">कृषिQ</h1>
+            <p class="text-brand-100 font-medium" data-i18n="login_subtitle">Empowering Farmers Digitally</p>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-5 max-w-md mx-auto w-full flex-grow mt-4">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <h2 class="text-xl font-bold text-slate-900" data-i18n="login_title">Login to your account</h2>
+                
+                <!-- Phone -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_phone">Phone Number (Aadhaar Linked)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">+91</span>
+                        <input type="tel" class="w-full rounded-xl border-slate-300 border-2 py-3 pl-12 pr-4 text-lg focus:ring-brand-500 focus:border-brand-500 bg-slate-50 transition-colors" placeholder="9876543210">
+                    </div>
+                </div>
+
+                <!-- OTP (Hidden initially) -->
+                <div id="loginOtpSection" class="hidden">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_otp">Enter OTP</label>
+                    <div class="flex gap-3 justify-between">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                    </div>
+                </div>
+
+                <button id="loginBtn" onclick="handleLoginClick()" class="w-full py-4 rounded-xl bg-brand-600 active:bg-brand-700 text-white text-lg font-bold shadow-lg shadow-brand-500/30 transition-transform active:scale-95">
+                    <span data-i18n="login_get_otp" id="loginBtnText">Get OTP</span>
+                </button>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <p class="text-slate-600 mb-4 text-sm font-medium">
+                    <span data-i18n="login_no_account">Don't have an account?</span> 
+                    <button onclick="switchToRegistration()" class="text-brand-600 font-bold ml-1 active:text-brand-800 underline"><span data-i18n="login_register_link">Register here</span></button>
+                </p>
+                <button class="flex items-center justify-center gap-2 text-brand-700 font-bold w-full py-4 bg-brand-100 rounded-xl active:bg-brand-200 transition-colors border border-brand-200" onclick="showMsg('Listening in local language...\n(BHASHINI Voice Assistant Mock)')">
+                    <i class="fa-solid fa-microphone text-xl"></i> <span data-i18n="login_voice">Login using Voice</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Page Overlay (Hidden by default) -->
+    <div id="registrationPage" class="fixed inset-0 bg-slate-50 z-[100] hidden flex-col overflow-y-auto pb-20">
+        <!-- Header -->
+        <div class="bg-white px-4 py-4 border-b border-slate-200 flex items-center gap-3 sticky top-0 z-10 shadow-sm">
+            <button onclick="switchToLogin()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 active:bg-slate-200 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 class="text-xl font-bold text-slate-900" data-i18n="reg_title">Farmer Registration</h2>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-5 max-w-md mx-auto w-full flex-grow">
+            <!-- Progress Steps -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="w-[48%] h-2 bg-brand-500 rounded-full"></div>
+                <div class="w-[48%] h-2 bg-slate-200 rounded-full"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <!-- Phone -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_phone">Phone Number (Aadhaar Linked)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">+91</span>
+                        <input type="tel" class="w-full rounded-xl border-slate-300 border-2 py-3 pl-12 pr-4 text-lg focus:ring-brand-500 focus:border-brand-500 bg-slate-50 transition-colors" placeholder="9876543210">
+                    </div>
+                    <div class="flex justify-end mt-2">
+                        <button class="text-brand-600 text-sm font-bold bg-brand-50 px-3 py-1 rounded-lg active:bg-brand-100" onclick="showMsg('OTP sent to mobile!')">Get OTP</button>
+                    </div>
+                </div>
+
+                <!-- OTP -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_otp">Enter OTP</label>
+                    <div class="flex gap-3 justify-between">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                        <input type="text" maxlength="1" class="w-12 h-14 text-center rounded-xl border-slate-300 border-2 text-xl font-bold focus:ring-brand-500 focus:border-brand-500 bg-slate-50">
+                    </div>
+                </div>
+
+                <!-- Personal Details -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_name">Full Name</label>
+                    <input type="text" class="w-full rounded-xl border-slate-300 border-2 p-3 text-lg focus:ring-brand-500 focus:border-brand-500 bg-slate-50 transition-colors" placeholder="E.g. Ramakant Sharma">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2" data-i18n="reg_state">Select State</label>
+                    <div class="relative">
+                        <select class="w-full rounded-xl border-slate-300 border-2 p-3 text-lg focus:ring-brand-500 focus:border-brand-500 bg-slate-50 appearance-none transition-colors">
+                            <option>Chhattisgarh</option>
+                            <option>Maharashtra</option>
+                            <option>Madhya Pradesh</option>
+                            <option>Andhra Pradesh</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                </div>
+
+                <button onclick="showMsg('Registration Successful! Generating Kisan ID...'); setTimeout(toggleRegistration, 2500);" class="w-full py-4 rounded-xl bg-brand-600 active:bg-brand-700 text-white text-lg font-bold shadow-lg shadow-brand-500/30 transition-transform active:scale-95 mt-4">
+                    Complete Registration
+                </button>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button class="flex items-center justify-center gap-2 text-brand-700 font-bold w-full py-4 bg-brand-100 rounded-xl active:bg-brand-200 transition-colors border border-brand-200" onclick="showMsg('Listening in local language...\n(BHASHINI Voice Assistant Mock)')">
+                    <i class="fa-solid fa-microphone text-xl"></i> <span data-i18n="reg_voice">Register using Voice (BHASHINI)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="fixed bottom-0 w-full bg-white border-t border-slate-200 z-50 md:hidden flex justify-around pb-safe pt-2 px-2 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <a href="#" class="flex flex-col items-center p-2 text-brand-600">
+            <i class="fa-solid fa-house text-xl mb-1"></i>
+            <span class="text-[10px] font-semibold" data-i18n="nav_home">Home</span>
+        </a>
+        <a href="#demo" class="flex flex-col items-center p-2 text-slate-400 hover:text-brand-600 transition-colors">
+            <i class="fa-solid fa-truck text-xl mb-1"></i>
+            <span class="text-[10px] font-medium" data-i18n="nav_status">Status</span>
+        </a>
+        <a href="#" class="flex flex-col items-center p-2 text-slate-400 hover:text-brand-600 transition-colors" onclick="showMsg('Market Prices Module')">
+            <i class="fa-solid fa-chart-line text-xl mb-1"></i>
+            <span class="text-[10px] font-medium" data-i18n="nav_market">Market</span>
+        </a>
+        <a href="#" class="flex flex-col items-center p-2 text-slate-400 hover:text-brand-600 transition-colors" onclick="toggleRegistration()">
+            <i class="fa-solid fa-user text-xl mb-1"></i>
+            <span class="text-[10px] font-medium" data-i18n="nav_profile">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Desktop Footer (Hidden behind bottom nav on mobile) -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm md:pb-8 pb-24">
+        Project KRISHIQ | Team AgriNova | SIH 2026
+    </footer>
+
+    <!-- Custom Message Box for Mock Interactions -->
+    <div id="msgBox" class="fixed top-20 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl transition-all duration-300 opacity-0 pointer-events-none z-[100] text-sm font-medium whitespace-pre-line text-center">
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                hero_title: "Sell Your Crop Easily & Quickly",
+                hero_desc: "Avoid long lines at the Mandi. Book your slot and know exactly when to arrive.",
+                btn_book_slot: "Book Mandi Slot Now",
+                quick_actions: "Quick Actions",
+                action_wait: "Check Wait Time",
+                action_prices: "Market Prices",
+                action_payments: "My Payments",
+                action_kiosk: "Find Kiosk",
+                nav_home: "Home",
+                nav_status: "Status",
+                nav_market: "Market",
+                nav_profile: "Profile",
+                reg_title: "Farmer Registration",
+                reg_phone: "Phone Number (Aadhaar Linked)",
+                reg_otp: "Enter OTP",
+                reg_name: "Full Name",
+                reg_state: "Select State",
+                reg_voice: "Register using Voice",
+                login_subtitle: "Empowering Farmers Digitally",
+                login_title: "Login to your account",
+                login_get_otp: "Get OTP",
+                login_submit: "Verify & Login",
+                login_no_account: "Don't have an account?",
+                login_register_link: "Register here",
+                login_voice: "Login using Voice"
+            },
+            hi: {
+                hero_title: "अपनी फसल आसानी और जल्दी से बेचें",
+                hero_desc: "मंडी में लंबी लाइनों से बचें। अपना स्लॉट बुक करें और जानें कि कब पहुंचना है।",
+                btn_book_slot: "अभी मंडी स्लॉट बुक करें",
+                quick_actions: "त्वरित कार्रवाई",
+                action_wait: "प्रतीक्षा समय जांचें",
+                action_prices: "बाजार भाव",
+                action_payments: "मेरे भुगतान",
+                action_kiosk: "कियोस्क खोजें",
+                nav_home: "होम",
+                nav_status: "स्थिति",
+                nav_market: "बाजार",
+                nav_profile: "प्रोफाइल",
+                reg_title: "किसान पंजीकरण",
+                reg_phone: "फोन नंबर (आधार से लिंक)",
+                reg_otp: "OTP दर्ज करें",
+                reg_name: "पूरा नाम",
+                reg_state: "राज्य चुनें",
+                reg_voice: "वॉयस (BHASHINI) से रजिस्टर करें",
+                login_subtitle: "किसानों को डिजिटल रूप से सशक्त बनाना",
+                login_title: "अपने खाते में लॉग इन करें",
+                login_get_otp: "OTP प्राप्त करें",
+                login_submit: "सत्यापित करें और लॉगिन करें",
+                login_no_account: "क्या आपके पास खाता नहीं है?",
+                login_register_link: "यहां रजिस्टर करें",
+                login_voice: "वॉयस (BHASHINI) से लॉगिन करें"
+            },
+            mr: {
+                hero_title: "तुमचे पीक सहज आणि लवकर विका",
+                hero_desc: "मंडीतील लांब रांगा टाळा. तुमचा स्लॉट बुक करा आणि नक्की कधी पोहोचायचे ते जाणून घ्या.",
+                btn_book_slot: "आता मंडी स्लॉट बुक करा",
+                quick_actions: "त्वरित कृती",
+                action_wait: "प्रतीक्षा वेळ तपासा",
+                action_prices: "बाजारभाव",
+                action_payments: "माझे पेमेंट",
+                action_kiosk: "कियोस्क शोधा",
+                nav_home: "मुख्यपृष्ठ",
+                nav_status: "स्थिती",
+                nav_market: "बाजार",
+                nav_profile: "प्रोफाइल",
+                reg_title: "शेतकरी नोंदणी",
+                reg_phone: "फोन नंबर (आधार संलग्न)",
+                reg_otp: "OTP प्रविष्ट करा",
+                reg_name: "पूर्ण नाव",
+                reg_state: "राज्य निवडा",
+                reg_voice: "आवाजाचा वापर करून नोंदणी करा",
+                login_subtitle: "शेतकऱ्यांना डिजिटल सक्षम करणे",
+                login_title: "तुमच्या खात्यात लॉग इन करा",
+                login_get_otp: "OTP मिळवा",
+                login_submit: "सत्यापित करा आणि लॉगिन करा",
+                login_no_account: "खाते नाही?",
+                login_register_link: "येथे नोंदणी करा",
+                login_voice: "आवाजाचा वापर करून लॉगिन करा"
+            },
+            te: {
+                hero_title: "మీ పంటను సులభంగా విక్రయించండి",
+                hero_desc: "మండిలో పొడవైన క్యూలను నివారించండి. మీ స్లాట్‌ను బుక్ చేసుకోండి.",
+                btn_book_slot: "ఇప్పుడే స్లాట్ బుక్ చేయండి",
+                quick_actions: "త్వరిత చర్యలు",
+                action_wait: "వేచి ఉండే సమయం",
+                action_prices: "మార్కెట్ ధరలు",
+                action_payments: "నా చెల్లింపులు",
+                action_kiosk: "కియోస్క్ కనుగొనండి",
+                nav_home: "హోమ్",
+                nav_status: "స్థితి",
+                nav_market: "మార్కెట్",
+                nav_profile: "ప్రొఫైల్",
+                reg_title: "రైతు నమోదు",
+                reg_phone: "ఫోన్ నంబర్",
+                reg_otp: "OTP నమోదు చేయండి",
+                reg_name: "పూర్తి పేరు",
+                reg_state: "రాష్ట్రం ఎంచుకోండి",
+                reg_voice: "వాయిస్ ద్వారా నమోదు చేయండి",
+                login_subtitle: "రైతులకు డిజిటల్ సాధికారత",
+                login_title: "మీ ఖాతాకు లాగిన్ అవ్వండి",
+                login_get_otp: "OTP పొందండి",
+                login_submit: "ధృవీకరించి లాగిన్ చేయండి",
+                login_no_account: "ఖాతా లేదా?",
+                login_register_link: "ఇక్కడ నమోదు చేయండి",
+                login_voice: "వాయిస్ ద్వారా లాగిన్ చేయండి"
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const elements = document.querySelectorAll('[data-i18n]');
+            
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+            
+            showMsg('Language updated successfully.');
+        }
+
+        // Custom Message function to avoid ugly alerts
+        function showMsg(text) {
+            const msgBox = document.getElementById('msgBox');
+            msgBox.innerText = text;
+            msgBox.classList.remove('opacity-0', '-translate-y-4');
+            setTimeout(() => {
+                msgBox.classList.add('opacity-0', '-translate-y-4');
+            }, 3000);
+        }
+
+        // Toggle Registration Modal
+        function toggleRegistration() {
+            const regPage = document.getElementById('registrationPage');
+            if (regPage.classList.contains('hidden')) {
+                regPage.classList.remove('hidden');
+                regPage.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            } else {
+                regPage.classList.add('hidden');
+                regPage.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Login Page Logic
+        let loginStep = 1;
+        function handleLoginClick() {
+            if (loginStep === 1) {
+                // Show OTP Step
+                document.getElementById('loginOtpSection').classList.remove('hidden');
+                const btnText = document.getElementById('loginBtnText');
+                const lang = document.getElementById('languageSelect').value;
+                
+                // Update translation key for button
+                btnText.setAttribute('data-i18n', 'login_submit');
+                btnText.innerText = translations[lang]['login_submit'] || 'Verify & Login';
+                
+                showMsg('OTP sent to your mobile!');
+                loginStep = 2;
+            } else {
+                // Process Login
+                showMsg('Login successful!');
+                setTimeout(() => {
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('loginPage').classList.remove('flex');
+                    document.body.style.overflow = '';
+                    
+                    // Reset login form for next time
+                    loginStep = 1;
+                    document.getElementById('loginOtpSection').classList.add('hidden');
+                    const btnText = document.getElementById('loginBtnText');
+                    const lang = document.getElementById('languageSelect').value;
+                    btnText.setAttribute('data-i18n', 'login_get_otp');
+                    btnText.innerText = translations[lang]['login_get_otp'] || 'Get OTP';
+                }, 1000);
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginPage').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function switchToRegistration() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('flex');
+            toggleRegistration();
+        }
+
+        function switchToLogin() {
+            document.getElementById('registrationPage').classList.add('hidden');
+            document.getElementById('registrationPage').classList.remove('flex');
+            showLogin();
+        }
+
+        // Initialize App by showing the Login page
+        setTimeout(showLogin, 50);
+
+        // AI Mock Inference Logic (Optimized for Mobile Demo)
+        function runInference() {
+            const btn = document.getElementById('predictBtn');
+            const defaultState = document.getElementById('defaultState');
+            const loadingState = document.getElementById('loadingState');
+            const resultState = document.getElementById('resultState');
+            const volume = document.getElementById('volumeInput').value || 50;
+            const mandi = document.getElementById('mandiSelect').value;
+            
+            // UI State change to loading
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Checking...';
+            btn.classList.add('opacity-80');
+            
+            defaultState.classList.add('hidden');
+            resultState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            // Simulate network delay
+            setTimeout(() => {
+                // Calculation
+                const baseTime = mandi === 'nawapara' ? 20 : (mandi === 'raipur' ? 45 : 15);
+                const volumeMultiplier = (volume / 50);
+                let finalWaitTime = Math.round((baseTime * volumeMultiplier) + (Math.random() * 10 - 5));
+                if (finalWaitTime < 5) finalWaitTime = 5; 
+
+                const loadPercentage = Math.min(100, Math.round((finalWaitTime / 120) * 100)); 
+                
+                // Update UI
+                document.getElementById('predictedTime').innerText = finalWaitTime;
+                
+                const capacityBar = document.getElementById('capacityBar');
+                capacityBar.style.width = loadPercentage + '%';
+                
+                const actionEl = document.getElementById('actionStatus');
+                
+                if(loadPercentage < 40) {
+                    capacityBar.className = 'bg-green-500 h-3 rounded-full transition-all duration-1000';
+                    actionEl.innerText = 'Come now, no queue.';
+                    actionEl.className = 'text-sm font-bold text-green-600';
+                }
+                else if(loadPercentage < 75) {
+                    capacityBar.className = 'bg-yellow-500 h-3 rounded-full transition-all duration-1000';
+                    actionEl.innerText = 'Moderate wait. Wait at Staging Area.';
+                    actionEl.className = 'text-sm font-bold text-yellow-600';
+                }
+                else {
+                    capacityBar.className = 'bg-red-500 h-3 rounded-full transition-all duration-1000';
+                    actionEl.innerText = 'High rush. Please come after 2 hours.';
+                    actionEl.className = 'text-sm font-bold text-red-600';
+                }
+
+                // Restore UI State
+                loadingState.classList.add('hidden');
+                resultState.classList.remove('hidden');
+                btn.disabled = false;
+                btn.innerHTML = 'Check My Wait Time';
+                btn.classList.remove('opacity-80');
+
+            }, 1000); 
+        }
+    </script>
+</body>
+</html>
