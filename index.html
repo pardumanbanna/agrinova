@@ -103,10 +103,21 @@
                 <i class="fa-solid fa-wheat-awn absolute -bottom-6 -right-6 text-9xl text-white opacity-10"></i>
             </div>
 
+            <!-- NEW: Weather-Synchronized Dynamic Scheduling Alert -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
+                <div class="mt-1 text-blue-500 animate-pulse">
+                    <i class="fa-solid fa-cloud-showers-heavy text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-blue-900" data-i18n="weather_title">Weather Alert: Rain Expected</h3>
+                    <p class="text-xs text-blue-700 mt-1" data-i18n="weather_desc">IMD predicts unseasonal rain in 48 hours. We prioritized your slot booking to save your crop from damage.</p>
+                </div>
+            </div>
+
             <!-- Mobile Quick Actions Grid -->
             <div class="mb-10">
                 <h2 class="text-lg font-bold text-slate-800 mb-4 px-1" data-i18n="quick_actions">Quick Actions</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                     <!-- Action 1 -->
                     <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="document.getElementById('demo').scrollIntoView()">
                         <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-2xl">
@@ -134,6 +145,20 @@
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
                         <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_kiosk">Find Kiosk</span>
+                    </button>
+                    <!-- NEW: AI Vision Crop Grading -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="showMsg('Opening Camera for AI Pre-Check Quality Assaying...')">
+                        <div class="w-14 h-14 rounded-full bg-teal-50 text-teal-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_grading">AI Grading</span>
+                    </button>
+                    <!-- NEW: Kisan Rath Pooling -->
+                    <button class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center justify-center gap-3 active:bg-slate-50 active:scale-[0.98] transition-all" onclick="showMsg('Searching for nearby farmers to pool tractor transport...')">
+                        <div class="w-14 h-14 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-tractor"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700 text-center" data-i18n="action_pooling">Tractor Pool</span>
                     </button>
                 </div>
             </div>
@@ -479,6 +504,12 @@
                         3 <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
                     </div>
                 </div>
+                <!-- NEW: Digital Escrow DBT Metric -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-500 hidden md:block">
+                    <div class="text-slate-500 text-xs font-bold uppercase mb-1">DBT Payouts SLA (48hr)</div>
+                    <div class="text-2xl font-black text-indigo-600">98.4%</div>
+                    <div class="text-[10px] text-slate-500 mt-1">Direct Benefit Transfer Escrow</div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -549,6 +580,26 @@
                             <p class="text-xs text-slate-600 mb-3">Outgoing transport capacity at Durg Mandi is 40% below required rate for current inventory.</p>
                             <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded transition-colors" onclick="showMsg('Alerting regional transport union.')">Dispatch Trucks</button>
                         </div>
+                        
+                        <!-- NEW: Geospatial Disease Outbreak Tracking -->
+                        <div class="bg-white p-4 rounded-lg border border-purple-200 shadow-sm border-l-4 border-l-purple-500">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm text-slate-800">Crop Health Warning</h3>
+                                <span class="text-[10px] text-slate-400">Live Alert</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">AI Vision pre-checks indicate a 22% spike in discoloration (potential pest/blight) in Paddy from Raipur East village cluster.</p>
+                            <button class="w-full bg-slate-100 hover:bg-slate-200 text-purple-700 text-xs font-bold py-2 rounded transition-colors" onclick="showMsg('Deploying Agriculture Extension Officers to Raipur East on Map.')">Deploy Field Officers</button>
+                        </div>
+
+                        <!-- NEW: Predictive FCI Routing -->
+                        <div class="bg-white p-4 rounded-lg border border-blue-200 shadow-sm border-l-4 border-l-blue-500">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm text-slate-800">FCI Evacuation Trigger</h3>
+                                <span class="text-[10px] text-slate-400">Automated</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">Projected influx of 5,000 quintals at Bilaspur APMC by 6 PM. Automatic requisition sent for empty FCI trucks to clear staging area.</p>
+                            <button class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold py-2 rounded transition-colors" onclick="showMsg('Opening Predictive FCI Logistics Map...')">View Logistics Map</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -586,6 +637,22 @@
                 </button>
             </div>
 
+            <!-- NEW: IoT Weighbridge Integration -->
+            <div class="bg-slate-900 rounded-xl p-4 text-white flex items-center justify-between shadow-md">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 animate-pulse shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+                        <i class="fa-solid fa-scale-unbalanced text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm">IoT Weighbridge Sync</h3>
+                        <p class="text-xs text-slate-400">Zero-Touch Live Weighing Active</p>
+                    </div>
+                </div>
+                <button class="bg-white/10 hover:bg-white/20 text-xs font-bold px-3 py-2 rounded-lg transition-colors border border-white/20" onclick="showMsg('Checking IoT Sensor Calibration Settings...')">
+                    View Logs
+                </button>
+            </div>
+
             <!-- Local Metrics -->
             <div class="grid grid-cols-3 gap-3">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
@@ -614,8 +681,10 @@
                             <div>
                                 <div class="font-bold text-slate-800 text-sm">Ramesh Kumar (ID: 8821)</div>
                                 <div class="text-xs text-slate-500">Paddy • 40 Quintals</div>
+                                <!-- NEW: Automated Bay Allocation -->
+                                <div class="text-[10px] font-bold text-emerald-700 mt-1.5 bg-emerald-200/60 inline-block px-2 py-0.5 rounded shadow-sm border border-emerald-300"><i class="fa-solid fa-map-pin mr-1"></i> Auto-Assigned: Bay 4</div>
                             </div>
-                            <button class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm" onclick="showMsg('Farmer Ramesh cleared for Entry Gate 1')">Admit</button>
+                            <button class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm" onclick="showMsg('Farmer Ramesh cleared for Entry Gate 1 to Bay 4')">Admit</button>
                         </li>
                         <li class="p-4 flex justify-between items-center">
                             <div>
@@ -677,6 +746,10 @@
                 action_prices: "Market Prices",
                 action_payments: "My Payments",
                 action_kiosk: "Find Kiosk",
+                action_grading: "AI Grading",
+                action_pooling: "Tractor Pool",
+                weather_title: "Weather Alert: Rain Expected",
+                weather_desc: "IMD predicts unseasonal rain in 48 hours. We prioritized your slot booking to save your crop from damage.",
                 nav_home: "Home",
                 nav_status: "Status",
                 nav_market: "Market",
@@ -704,6 +777,10 @@
                 action_prices: "बाजार भाव",
                 action_payments: "मेरे भुगतान",
                 action_kiosk: "कियोस्क खोजें",
+                action_grading: "AI गुणवत्ता",
+                action_pooling: "ट्रैक्टर पूल",
+                weather_title: "मौसम अलर्ट: बारिश की संभावना",
+                weather_desc: "IMD ने 48 घंटों में बेमौसम बारिश की भविष्यवाणी की है। फसल को बचाने के लिए हमने आपके स्लॉट को प्राथमिकता दी है।",
                 nav_home: "होम",
                 nav_status: "स्थिति",
                 nav_market: "बाजार",
@@ -731,6 +808,10 @@
                 action_prices: "बाजारभाव",
                 action_payments: "माझे पेमेंट",
                 action_kiosk: "कियोस्क शोधा",
+                action_grading: "AI गुणवत्ता",
+                action_pooling: "ट्रॅक्टर पूल",
+                weather_title: "हवामान इशारा: पावसाची शक्यता",
+                weather_desc: "IMD ने ४८ तासांत अवकाळी पावसाचा अंदाज वर्तवला आहे. पीक वाचवण्यासाठी आम्ही तुमच्या बुकिंगला प्राधान्य दिले आहे.",
                 nav_home: "मुख्यपृष्ठ",
                 nav_status: "स्थिती",
                 nav_market: "बाजार",
@@ -758,6 +839,10 @@
                 action_prices: "మార్కెట్ ధరలు",
                 action_payments: "నా చెల్లింపులు",
                 action_kiosk: "కియోస్క్ కనుగొనండి",
+                action_grading: "AI నాణ్యత",
+                action_pooling: "ట్రాక్టర్ పూల్",
+                weather_title: "వాతావరణ హెచ్చరిక: వర్షం",
+                weather_desc: "48 గంటల్లో అకాల వర్షం కురుస్తుందని IMD అంచనా వేసింది. పంట నష్టం జరగకుండా మీ స్లాట్ బుకింగ్ కు ప్రాధాన్యత ఇచ్చాము.",
                 nav_home: "హోమ్",
                 nav_status: "స్థితి",
                 nav_market: "మార్కెట్",
