@@ -350,6 +350,16 @@
                 <button class="flex items-center justify-center gap-2 text-brand-700 font-bold w-full py-4 bg-brand-100 rounded-xl active:bg-brand-200 transition-colors border border-brand-200" onclick="showMsg('Listening in local language...\n(BHASHINI Voice Assistant Mock)')">
                     <i class="fa-solid fa-microphone text-xl"></i> <span data-i18n="login_voice">Login using Voice</span>
                 </button>
+                
+                <!-- Admin & Local Access Links -->
+                <div class="mt-8 pt-4 border-t border-slate-200 flex flex-col gap-3">
+                    <button onclick="switchToLocalOfficial()" class="text-xs font-semibold text-slate-600 hover:text-slate-800 transition-colors flex items-center justify-center gap-2 mx-auto uppercase tracking-wider bg-slate-100 px-4 py-2 rounded-lg w-full active:bg-slate-200 border border-slate-200">
+                        <i class="fa-solid fa-clipboard-user"></i> Local Mandi Official Login
+                    </button>
+                    <button onclick="switchToAdmin()" class="text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors flex items-center justify-center gap-2 mx-auto uppercase tracking-wider mt-2">
+                        <i class="fa-solid fa-shield-halved"></i> State Command Admin
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -424,6 +434,205 @@
                 <button class="flex items-center justify-center gap-2 text-brand-700 font-bold w-full py-4 bg-brand-100 rounded-xl active:bg-brand-200 transition-colors border border-brand-200" onclick="showMsg('Listening in local language...\n(BHASHINI Voice Assistant Mock)')">
                     <i class="fa-solid fa-microphone text-xl"></i> <span data-i18n="reg_voice">Register using Voice (BHASHINI)</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Government Admin Portal Overlay (Hidden by default) -->
+    <div id="adminPage" class="fixed inset-0 bg-slate-50 z-[120] hidden flex-col overflow-y-auto">
+        <!-- Admin Navbar -->
+        <nav class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center sticky top-0 z-10 shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-building-columns text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Govt Command Center</h1>
+                    <p class="text-[10px] text-blue-300 font-mono tracking-widest uppercase">KRISHIQ Admin</p>
+                </div>
+            </div>
+            <button onclick="adminLogout()" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-slate-700">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Exit
+            </button>
+        </nav>
+
+        <!-- Admin Content -->
+        <div class="p-4 md:p-6 max-w-7xl mx-auto w-full flex-grow space-y-6">
+            
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-blue-500">
+                    <div class="text-slate-500 text-xs font-bold uppercase mb-1">Active Mandis</div>
+                    <div class="text-2xl font-black text-slate-900">124</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-green-500">
+                    <div class="text-slate-500 text-xs font-bold uppercase mb-1">Farmers Online</div>
+                    <div class="text-2xl font-black text-slate-900">8,432</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-amber-500">
+                    <div class="text-slate-500 text-xs font-bold uppercase mb-1">Pending Slots</div>
+                    <div class="text-2xl font-black text-slate-900">1,204</div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-red-500">
+                    <div class="text-slate-500 text-xs font-bold uppercase mb-1">Critical Alerts</div>
+                    <div class="text-2xl font-black text-red-600 flex items-center gap-2">
+                        3 <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Live Queue Monitoring -->
+                <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="bg-slate-100 px-5 py-3 border-b border-slate-200 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-800"><i class="fa-solid fa-tower-broadcast text-blue-500 mr-2"></i> Live Mandi Load Balancing</h2>
+                        <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full animate-pulse">Live</span>
+                    </div>
+                    <div class="p-0 overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm min-w-[500px]">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200">
+                                    <th class="p-4 font-semibold">Location</th>
+                                    <th class="p-4 font-semibold">Current Queue</th>
+                                    <th class="p-4 font-semibold">AI Wait Time</th>
+                                    <th class="p-4 font-semibold">Status</th>
+                                    <th class="p-4 font-semibold">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="p-4 font-bold text-slate-800">Raipur Central</td>
+                                    <td class="p-4">145 Tractors</td>
+                                    <td class="p-4 font-mono text-red-600 font-bold">185 mins</td>
+                                    <td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">OVERLOADED</span></td>
+                                    <td class="p-4"><button class="text-blue-600 hover:underline font-semibold" onclick="showMsg('Diverting traffic to Dhamtari...')">Divert Traffic</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-bold text-slate-800">Nawapara APMC</td>
+                                    <td class="p-4">32 Tractors</td>
+                                    <td class="p-4 font-mono text-amber-600 font-bold">45 mins</td>
+                                    <td class="p-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-bold">MODERATE</span></td>
+                                    <td class="p-4"><button class="text-blue-600 hover:underline font-semibold" onclick="showMsg('Monitoring queue rate...')">Monitor</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-bold text-slate-800">Dhamtari Hub</td>
+                                    <td class="p-4">5 Tractors</td>
+                                    <td class="p-4 font-mono text-green-600 font-bold">10 mins</td>
+                                    <td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">OPTIMAL</span></td>
+                                    <td class="p-4"><button class="text-blue-600 hover:underline font-semibold" onclick="showMsg('Sending push notifications to redirect farmers here.')">Accept Reroutes</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- AI Anomaly Detection -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="bg-slate-900 px-5 py-3 border-b border-slate-800 flex justify-between items-center text-white">
+                        <h2 class="font-bold"><i class="fa-solid fa-microchip text-purple-400 mr-2"></i> AI Anomaly Detection</h2>
+                    </div>
+                    <div class="p-5 flex-grow bg-slate-50 space-y-4">
+                        <div class="bg-white p-4 rounded-lg border border-red-200 shadow-sm border-l-4 border-l-red-500">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm text-slate-800">Price Manipulation Flag</h3>
+                                <span class="text-[10px] text-slate-400">2 mins ago</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">Unusual 15% drop in Paddy pricing detected at Bilaspur APMC compared to state average.</p>
+                            <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded transition-colors" onclick="showMsg('Initiating BDO audit protocol.')">Initiate Audit</button>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg border border-amber-200 shadow-sm border-l-4 border-l-amber-500">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm text-slate-800">Logistics Bottleneck</h3>
+                                <span class="text-[10px] text-slate-400">14 mins ago</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">Outgoing transport capacity at Durg Mandi is 40% below required rate for current inventory.</p>
+                            <button class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded transition-colors" onclick="showMsg('Alerting regional transport union.')">Dispatch Trucks</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Local Mandi Official Portal Overlay (Hidden by default) -->
+    <div id="localOfficialPage" class="fixed inset-0 bg-slate-50 z-[115] hidden flex-col overflow-y-auto">
+        <!-- Local Navbar -->
+        <nav class="bg-emerald-800 text-white px-4 py-3 flex justify-between items-center sticky top-0 z-10 shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-tractor text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Nawapara APMC</h1>
+                    <p class="text-[10px] text-emerald-200 font-mono tracking-widest uppercase">Gate Operations</p>
+                </div>
+            </div>
+            <button onclick="localOfficialLogout()" class="bg-emerald-900/50 hover:bg-emerald-900 active:bg-emerald-950 px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border border-emerald-700">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+        </nav>
+
+        <!-- Local Content -->
+        <div class="p-4 md:p-6 max-w-4xl mx-auto w-full flex-grow space-y-6">
+            
+            <!-- Quick Actions for Operator -->
+            <div class="flex gap-4">
+                <button class="flex-1 bg-brand-600 active:bg-brand-700 text-white py-3 rounded-xl font-bold shadow-md transition-colors flex items-center justify-center gap-2" onclick="showMsg('Opening Scanner Camera...')">
+                    <i class="fa-solid fa-qrcode text-lg"></i> Scan Farmer ID
+                </button>
+                <button class="flex-1 bg-white border border-slate-300 active:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold shadow-sm transition-colors flex items-center justify-center gap-2" onclick="showMsg('Gate Status changed to: TEMPORARILY PAUSED')">
+                    <i class="fa-solid fa-traffic-light"></i> Pause Gate
+                </button>
+            </div>
+
+            <!-- Local Metrics -->
+            <div class="grid grid-cols-3 gap-3">
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+                    <div class="text-slate-500 text-[10px] font-bold uppercase mb-1">Expected Today</div>
+                    <div class="text-xl font-black text-slate-900">142</div>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center">
+                    <div class="text-slate-500 text-[10px] font-bold uppercase mb-1">Checked In</div>
+                    <div class="text-xl font-black text-brand-600">89</div>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-center bg-amber-50">
+                    <div class="text-amber-600 text-[10px] font-bold uppercase mb-1">Waiting Outside</div>
+                    <div class="text-xl font-black text-amber-600">14</div>
+                </div>
+            </div>
+
+            <!-- Live Incoming Queue -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
+                    <h2 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-users text-emerald-600 mr-2"></i> Next in Queue</h2>
+                    <span class="text-xs text-slate-500">Auto-refreshing...</span>
+                </div>
+                <div class="p-0">
+                    <ul class="divide-y divide-slate-100">
+                        <li class="p-4 flex justify-between items-center bg-emerald-50/50">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">Ramesh Kumar (ID: 8821)</div>
+                                <div class="text-xs text-slate-500">Paddy • 40 Quintals</div>
+                            </div>
+                            <button class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm" onclick="showMsg('Farmer Ramesh cleared for Entry Gate 1')">Admit</button>
+                        </li>
+                        <li class="p-4 flex justify-between items-center">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">Suresh Patel (ID: 1042)</div>
+                                <div class="text-xs text-slate-500">Wheat • 25 Quintals</div>
+                            </div>
+                            <button class="bg-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold" onclick="showMsg('Farmer notified to prepare for entry.')">Ping</button>
+                        </li>
+                        <li class="p-4 flex justify-between items-center">
+                            <div>
+                                <div class="font-bold text-slate-800 text-sm">Vinod Singh (ID: 9934)</div>
+                                <div class="text-xs text-slate-500">Maize • 15 Quintals</div>
+                            </div>
+                            <span class="text-xs font-medium text-amber-500 bg-amber-100 px-2 py-1 rounded">5 mins away</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -657,6 +866,46 @@
             document.getElementById('registrationPage').classList.add('hidden');
             document.getElementById('registrationPage').classList.remove('flex');
             showLogin();
+        }
+
+        function switchToAdmin() {
+            // Hide Login
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('flex');
+            
+            // Show Admin
+            document.getElementById('adminPage').classList.remove('hidden');
+            document.getElementById('adminPage').classList.add('flex');
+            document.body.style.overflow = ''; // Allow scrolling
+            
+            showMsg('State credentials verified. Welcome Admin.');
+        }
+
+        function switchToLocalOfficial() {
+            // Hide Login
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('flex');
+            
+            // Show Local Portal
+            document.getElementById('localOfficialPage').classList.remove('hidden');
+            document.getElementById('localOfficialPage').classList.add('flex');
+            document.body.style.overflow = ''; // Allow scrolling
+            
+            showMsg('Mandi Operator verified. Welcome to Nawapara Gate.');
+        }
+
+        function adminLogout() {
+            document.getElementById('adminPage').classList.add('hidden');
+            document.getElementById('adminPage').classList.remove('flex');
+            showLogin();
+            showMsg('Logged out of Admin Portal successfully.');
+        }
+
+        function localOfficialLogout() {
+            document.getElementById('localOfficialPage').classList.add('hidden');
+            document.getElementById('localOfficialPage').classList.remove('flex');
+            showLogin();
+            showMsg('Logged out of Local Portal successfully.');
         }
 
         // Initialize App by showing the Login page
